@@ -20,10 +20,10 @@
             "value": true
         },
         "wifi-ssid": {
-            "value": "\"Jan iPhone\""
+            "value": "\"SSID\""
         },
         "wifi-password": {
-            "value": "\"0624710192\""
+            "value": "\"Password\""
         },
         "button": {
             "help": "Pin which you'll use as button (can be overriden per target below)",
