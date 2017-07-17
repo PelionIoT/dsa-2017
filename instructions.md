@@ -323,10 +323,17 @@ Web server listening on port 5265!
 
 This should give you enough basic information on how you can connect sensors to the internet, how to get data back from the sensors and then process it through Python or node.js. But this was only a single sensor! We also have temperature sensors and accelerometers (enough for everyone). Gather together and see if you can connect these to the internet as well!
 
-* [3-axis accelerometer](https://developer.mbed.org/cookbook/Grove-3-axis-Accelerometer)
+* [3-axis accelerometer 16G](https://developer.mbed.org/cookbook/ADXL345-Accelerometer)
+    * Connect black->GND, red->3.3V (any will do), yellow->SCL, white->SDA. See the pinout for your board.
+    * For the test code, see how we read the value of the moisture sensor every second. Do something similar.
+    * To add the library to your project, right click on your project, select 'Add library' > 'From URL' and select https://developer.mbed.org/users/peterswanson87/code/ADXL345_I2C/.
+    * Then, in the **library folder** remove 'mbed' and 'main.cpp'.
+    * Initialize using `ADXL345_I2C accelerometer(D14, D15);`.
+* [3-axis accelerometer 3G](https://developer.mbed.org/cookbook/Grove-3-axis-Accelerometer)
     * Connect black->GND, red->3.3V (any will do), yellow->SCL, white->SDA. See the pinout for your board.
     * For the test code, see how we read the value of the moisture sensor every second. Do something similar.
     * To add the library to your project, right click on your project, select 'Add library' > 'From URL' and select https://developer.mbed.org/users/edodm85/code/MMA7660FC.
+    * Initialize using `MMA7660FC accelerometer(D14, D15, ADDR_MMA7660);`
 * [Temperature sensor](https://developer.mbed.org/teams/Seeed/wiki/Analog-Temperature-Sensor)
     * Works the same as the moisture sensor (analog sensor).
     * Connect black->GND, red->3.3V, yellow to A1.
