@@ -321,4 +321,46 @@ Web server listening on port 5265!
 
 ## 7. Other sensors
 
-This should give you enough basic information on how you can connect sensors to the internet, how to get data back from the sensors and then process it through Python or node.js. But this was only a single sensor! We also have temperature sensors, humidity sensors and accelerometers (enough for everyone). Gather together and see if you can connect these to the internet as well!
+This should give you enough basic information on how you can connect sensors to the internet, how to get data back from the sensors and then process it through Python or node.js. But this was only a single sensor! We also have temperature sensors and accelerometers (enough for everyone). Gather together and see if you can connect these to the internet as well!
+
+* [3-axis accelerometer](https://developer.mbed.org/cookbook/Grove-3-axis-Accelerometer)
+    * Connect black->GND, red->3.3V (any will do), yellow->SCL, white->SDA. See the pinout for your board.
+    * For the test code, see how we read the value of the moisture sensor every second. Do something similar.
+    * To add the library to your project, right click on your project, select 'Add library' > 'From URL' and select https://developer.mbed.org/users/edodm85/code/MMA7660FC.
+* [Temperature sensor](https://developer.mbed.org/teams/Seeed/wiki/Analog-Temperature-Sensor)
+    * Works the same as the moisture sensor (analog sensor).
+    * Connect black->GND, red->3.3V, yellow to A1.
+    * Returns a value between 0 and 1.
+    * Code example is in the component page, no library required.
+
+
+### Buffering data
+
+If you want to gather a lot of data (e.g. movement data from accelerometer), better not use a cloud variable for every action, as they are slow. Gather a few seconds of data, concat it, and then upload it all in one go.
+
+E.g.:
+
+```
+#include <sstream>
+
+std::stringstream ss;
+AnalogIn temp(A3);
+
+int readings_done = 0;
+
+void read_sensor() {
+    // add the value to the stringstream
+    ss << temp.read_u16();
+    ss << ",";
+
+    readings_done = readings_done + 1;
+    if (readings_done > 100) {
+        some_cloud_var = ss.str(); // assign the total string to a cloud variable
+        ss.str(""); // clear the stringstream
+
+        readings_done = 0; // and reset the number of readings done again
+    }
+}
+```
+
+**Note:** By default you can store about 1000 bytes in a cloud variable.
