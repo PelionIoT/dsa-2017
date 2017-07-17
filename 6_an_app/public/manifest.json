@@ -1,0 +1,7 @@
+{
+  "short_name": "Connected Lights",
+  "name": "ARM mbed Connected Lights",
+  "start_url": "/",
+  "display": "standalone",
+  "orientation": "portrait"
+}

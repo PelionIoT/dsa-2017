@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <title>Light System</title>
+  <link href='https://fonts.googleapis.com/css?family=Open+Sans:400,300,600' rel='stylesheet' type='text/css'>
+  <link rel="stylesheet" href="/style.css">
+  <link rel="manifest" href="/manifest.json">
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+</head>
+
+<body>
+  <div id="header">
+    <a href="/"><img id="logo" src="/ARMmbedLogo.svg"></a>
+  </div>
+
+  <h1>Lights</h1>
+
+  <ul id="devices">
+  {{#devices}}
+    {{> device}}
+  {{/devices}}
+  </ul>
+
+  <div id="color-picker-overlay" style="display: none">
+    <h2>Change color</h2>
+  </div>
+  <div id="notification" style="opacity: 0; visibility: hidden;"></div>
+
+  <script src="/helper-functions.js"></script>
+  <script src="/cp.js"></script>
+  <script src="/color-picker.js"></script>
+  <script src="/socket.io/socket.io.js"></script>
+  <script>
+    /*global io getElement updateStatusUi getDeviceName showNotification */
+
+    // Here is how we connect back to the server
+    var socket = io.connect(location.origin);
+
+    // ==== BEGIN SERVER EVENTS ====
+
+    var createDeviceEv, deleteDeviceEv, changeMoistureEv;
+
+    // Device came online, add it to the UI
+    socket.on('created-device', createDeviceEv = function(viewModel) {
+      document.querySelector('#devices').insertAdjacentHTML('beforeend', viewModel.html);
+    });
+
+    // Device was deleted, remove it from the UI
+    socket.on('removed-device', deleteDeviceEv = function(endpoint) {
+      showNotification(getDeviceName(endpoint, true) + ' was de-registered');
+
+      var li = getElement(endpoint);
+      li.parentNode.removeChild(li);
+    });
+
+    // When you go offline=>online, server will automatically send current state
+    // So you're always up to date with other clients.
+    socket.on('device-list', function(list) {
+      list.forEach(function(device) {
+        // element not in the UI yet? Create it!
+        if (!getElement(device.endpoint)) {
+          return createDeviceEv(device.view);
+        }
+
+        // otherwise, update the properties
+        changeMoistureEv(device.endpoint, device.view.model.moisture);
+      });
+
+      // find devices that are still in the UI, but no longer in the list...
+      var validEndpoints = list.map(function(device) { return device.endpoint; });
+      [].forEach.call(document.querySelectorAll('li[data-endpoint]'), function(li) {
+        if (validEndpoints.indexOf(li.dataset.endpoint) === -1) {
+          deleteDeviceEv(li.dataset.endpoint);
+        }
+      });
+
+    });
+
+    // ==== END OF SERVER EVENTS ====
+
+
+    // YOUR CODE HERE !!!
+    // Movement detected! This is an event sent by the server...
+    socket.on('change-moisture', changeMoistureEv = function(endpoint, value) {
+      getElement(endpoint).querySelector('.moisture').textContent = (Number(value) * 100).toFixed(2);
+    });
+
+  </script>
+
+</body>
+</html>

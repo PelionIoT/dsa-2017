@@ -1,0 +1,77 @@
+{
+    "config": {
+        "network-interface":{
+            "help": "options are ETHERNET,WIFI_ESP8266,WIFI_ODIN,MESH_LOWPAN_ND,MESH_THREAD",
+            "value": "WIFI_ESP8266"
+        },
+        "mesh_radio_type": {
+        	"help": "options are ATMEL, MCR20, SPIRIT1",
+        	"value": "ATMEL"
+        },
+        "esp8266-tx": {
+            "help": "Pin used as TX (connects to ESP8266 RX)",
+            "value": "D8"
+        },
+        "esp8266-rx": {
+            "help": "Pin used as RX (connects to ESP8266 TX)",
+            "value": "D2"
+        },
+        "esp8266-debug": {
+            "value": true
+        },
+        "wifi-ssid": {
+            "value": "\"Jan iPhone\""
+        },
+        "wifi-password": {
+            "value": "\"0624710192\""
+        },
+        "button": {
+            "help": "Pin which you'll use as button (can be overriden per target below)",
+            "value": "BUTTON1"
+        },
+        "builtin_led_on": {
+            "help": "Value to write to built-in LEDs to turn them on",
+            "value": 1,
+            "macro_name": "BUILTIN_LED_ON"
+        },
+        "builtin_led_off": {
+            "help": "Value to write to built-in LEDs to turn them off",
+            "value": 0,
+            "macro_name": "BUILTIN_LED_OFF"
+        }
+    },
+    "macros": ["MBEDTLS_USER_CONFIG_FILE=\"mbedtls_mbed_client_config.h\"", "MBEDTLS_NO_DEFAULT_ENTROPY_SOURCES", "MBEDTLS_TEST_NULL_ENTROPY"],
+    "target_overrides": {
+        "*": {
+            "target.features_add": ["NANOSTACK", "LOWPAN_ROUTER", "COMMON_PAL"],
+            "mbed-mesh-api.6lowpan-nd-channel-page": 0,
+            "mbed-mesh-api.6lowpan-nd-channel": 12,
+            "mbed-trace.enable": 0
+        },
+        "K64F": {
+            "button": "SW2",
+            "builtin_led_on": 0,
+            "builtin_led_off": 1
+        },
+        "HEXIWEAR": {
+            "button": "PTA12",
+            "esp8266-tx": "PTD3",
+            "esp8266-rx": "PTD2"
+        },
+        "NUCLEO_F401RE": {
+            "button": "USER_BUTTON",
+            "esp8266-tx": "D8",
+            "esp8266-rx": "D2"
+        },
+        "NUCLEO_F411RE": {
+            "button": "USER_BUTTON",
+            "esp8266-tx": "D8",
+            "esp8266-rx": "D2"
+        },
+        "NUMAKER_PFM_NUC472": {
+            "button": "SW1",
+            "builtin_led_on": 0,
+            "builtin_led_off": 1
+        }
+    }
+}
