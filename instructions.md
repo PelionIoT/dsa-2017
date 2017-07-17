@@ -120,21 +120,21 @@ We can now write a small program that checks on the moisture sensor, and respond
 1. Open `2_capacitive\main.h` and under `YOUR CODE HERE` add:
 
     ```cpp
-            // Read the value of the sensor
-            float moist = moisture.read();
-            // Print it back to the computer
-            printf("Moisture value is %f\r\n", moist);
+        // Read the value of the sensor
+        float moist = moisture.read();
+        // Print it back to the computer
+        printf("Moisture value is %f\r\n", moist);
 
-            // If we're > 10% moist, then toggle the LED
-            if (moist > 0.10) {
-                led = 1;
-            }
-            else {
-                led = 0;
-            }
+        // If we're > 10% moist, then toggle the LED
+        if (moist > 0.10) {
+            led = 1;
+        }
+        else {
+            led = 0;
+        }
 
-            // Pause between readings
-            wait_ms(100);
+        // Pause between readings
+        wait_ms(100);
     ```
 
 1. Compile and flash the program.
