@@ -229,6 +229,7 @@ Now change the project and write some code:
 1. This program is essentially the same as the last one, only:
     * It contains code to connect to the internet.
     * It uses a 'cloud variable', a variable that automatically syncs with the cloud to store data.
+1. Open `3_connected\main.h`.
 1. Under `YOUR CODE HERE` paste:
 
 ```cpp
