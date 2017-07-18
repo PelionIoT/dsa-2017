@@ -22,6 +22,8 @@
 #include "2_capacitive/main.h"
 #elif PROJECT == 3
 #include "3_connected/main.h"
+#elif PROJECT == 8
+#include "8_gathering_data/main.h"
 #else
 #error "Select a project (between 1 and 3) in select_project.h first!"
 #endif
