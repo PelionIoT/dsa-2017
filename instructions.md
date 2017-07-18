@@ -372,3 +372,67 @@ void read_sensor() {
 ```
 
 **Note:** By default you can store about 1000 bytes in a cloud variable.
+
+## 8a. Temperature
+
+We can also show temperature data. Take your program from `2_capacitive` (or `3_connected` if you managed to get internet connectivity).
+
+1. Connect the temperature sensor in the same way as the soil moisture sensor.
+1. In `select_project.h`, change the project to `2`.
+1. Replace the code under `YOUR_CODE_HERE` with:
+
+    ```cpp
+        unsigned int a, beta = 3975, units, tens;
+        float temperature, resistance;
+
+        a = moisture.read_u16(); /* Read analog value */
+
+        /* Calculate the resistance of the thermistor from analog votage read. */
+        resistance = (float) 10000.0 * ((65536.0 / a) - 1.0);
+
+        /* Convert the resistance to temperature using Steinhart's Hart equation */
+        temperature =(1/((log(resistance/10000.0)/beta) + (1.0/298.15)))-273.15;
+
+        printf("temperature is %f\n", temperature);
+
+        wait_ms(1000);
+    ```
+
+1. Compile and flash the application, and connect the terminal monitor to the board to see temperature.
+
+**Extra credit:** You can run both soil moisture sensor and temperature sensor at the same time. Connect Yellow->A1, Red->3.3V, Black->GND for this. Find a free 3.3V and a free GND port for this. See the [pinout](https://developer.mbed.org/media/uploads/bcostm/nucleo64_revc_f411re_mbed_pinout_v2_morpho.png). You'll also need another variable to read the temperature sensor's data.
+
+## 8b. Gathering data
+
+Let's gather some data and see if we can draw conclusions from it!
+
+1. Take a 16G accelerometer.
+    1. Attach Yellow->SCL, White->SDA, Red->3.3V, Black->GND.
+1. Right click on your project in the online compiler and select 'Update'.
+1. If prompted, click `Commit` to not lose your previous work.
+1. Type a message and click 'OK'.
+1. Open `select_project.h` and change the project to `8`.
+1. Compile and flash the application.
+
+Now we can gather data from this device. Connect a terminal monitor (Tera Term or screen) to the board.
+
+1. Press the blue button.
+1. After five seconds data gathering starts.
+1. Move the sensor around.
+1. After three seconds data gathering stops and data is shown in the terminal.
+1. Copy the data and paste in Excel (make sure X, Y, Z are on separate lines, you should have three lines in total).
+1. In Excel:
+    1. Select Column A.
+    1. Click *Data > Text to Columns*.
+    1. Select 'Comma' as a delimiter.
+    1. Data should be shown cleanly now
+1. Then select row 1, 2 and 3 and make a graph. Your accelerometer data is now plotted.
+
+Questions and homework:
+
+1. Can you see how you moved the sensor?
+1. Could you feed this data into a model?
+1. Experiment with different movements, could you distinguish the movement based on the raw data?
+1. Could you use a machine learning model to train on this data and then use a model to distinguish movement?
+
+**Extra credit:** If your board is connected to the internet you can do the visualization live from Python when data comes in. Take the program in 3_connected and add a new cloud variable that sends the data from the sensor to the cloud (make 3 `SimpleResourceString`'s named `accel_x`, `accel_y`, `accel_z`). Then from Python grab the data when it comes in and plot it using one of the visualization techniques you learned.
