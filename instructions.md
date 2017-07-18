@@ -204,11 +204,11 @@ Now that we have a basic program running, we can connect it to the internet thro
 
 First, we need to connect the WiFi module to the board. Connect the following pins on the WiFi module to the dev board using female->male header wires.
 
-![ESP8266 Wiring](!pinout-esp8266.jpg)
+![ESP8266 Wiring](img/pinout-esp8266.jpg)
 
 The pins that you need to use are highlighted here:
 
-![ESP8266 Wiring](!pinout-esp8266-2.png)
+![ESP8266 Wiring](img/pinout-esp8266-2.png)
 
 ### Security certificate
 
