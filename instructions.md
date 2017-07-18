@@ -277,7 +277,7 @@ We can also write some code to interact with this device.
 1. Change directory to the folder where you download the `dsa-2017` repository.
 1. Run `cd 5_from_code`.
 1. Run `pip install -U mbed-connector-api`.
-1. Open `main.js` in a text editor.
+1. Open `moisture.py` in a text editor.
 
 Now we need an access key (API key).
 
